@@ -33,7 +33,7 @@ int	ft_atoi_safe(const char *s, long *result)
 	while (s[i] >= '0' && s[i] <= '9')
 	{
 		n = n * 10 + (s[i] - '0');
-		if (n > 2147483648L)
+		if (n > (long)INT_MAX + 1)
 			return (0);
 		i++;
 	}
@@ -98,7 +98,7 @@ static void	parse_str(t_stack **head, const char *s)
 			buf[blen++] = s[i++];
 		while (s[i] >= '0' && s[i] <= '9')
 		{
-			if (blen >= 20)
+			if (blen >= (int)(sizeof(buf) - 2))
 				error_exit(head);
 			buf[blen++] = s[i++];
 		}
