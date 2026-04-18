@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   complex_sort.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hrandri2 <hrandri2@student.42antananari    +#+  +:+       +#+        */
+/*   By: tusandri <tusandri@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 23:10:16 by hrandri2          #+#    #+#             */
-/*   Updated: 2026/04/13 15:01:38 by hrandri2         ###   ########.fr       */
+/*   Updated: 2026/04/18 15:56:51 by tusandri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ void	bring_to_top(t_stack_node **a, t_stack_node *node, t_count *count)
 static int	get_max_bits(t_stack_node *a)
 {
 	int				max_index;
-	int				bits;
+	int				digits;
+	int				temp;
 	t_stack_node	*current;
 
 	max_index = 0;
@@ -47,38 +48,44 @@ static int	get_max_bits(t_stack_node *a)
 			max_index = current->final_index;
 		current = current->next;
 	}
-	bits = 0;
-	while ((max_index >> bits) != 0)
-		bits++;
-	return (bits);
+	if (max_index == 0)
+		return (1);
+	digits = 0;
+	temp = max_index;
+	while (temp > 0)
+	{
+		temp /= 10;
+		digits++;
+	}
+	return (digits);
 }
 
 static void	sort_by_bit(t_stack_node **a, t_stack_node **b,
-								t_count *count, int bit)
+								t_count *count, int exp)
 {
 	int	len;
 	int	i;
+	int	d;
 	int	pushed;
 
-	len = stack_len(*a);
-	i = 0;
 	pushed = 0;
-	while (i < len)
+	d = 0;
+	while (d <= 9)
 	{
-		if ((((*a)->final_index >> bit) & 1) == 0)
+		len = stack_len(*a);
+		i = 0;
+		while (i < len)
 		{
-			pb(b, a, count);
-			pushed++;
+			if (((*a)->final_index / exp) % 10 == d)
+				(pb(b, a, count), pushed++);
+			else
+				ra(a, count);
+			i++;
 		}
-		else
-			ra(a, count);
-		i++;
+		d++;
 	}
 	while (pushed > 0)
-	{
-		pa(a, b, count);
-		pushed--;
-	}
+		(pa(a, b, count), pushed--);
 }
 
 static void	count_len_stack(t_stack_node **a, t_stack_node **b, int len,
@@ -108,20 +115,21 @@ static void	count_len_stack(t_stack_node **a, t_stack_node **b, int len,
 void	radix_sort(t_stack_node **a, t_stack_node **b, t_count *count)
 {
 	int	len;
-	int	max_bits;
-	int	bit;
-	int	skip;
+	int	max_digits;
+	int	digit;
+	int	exp;
 
 	if (!a || !*a)
 		return ;
 	len = stack_len(*a);
 	count_len_stack(a, b, len, count);
-	skip = 0;
-	max_bits = get_max_bits(*a);
-	bit = skip;
-	while (bit < max_bits)
+	max_digits = get_max_bits(*a);
+	digit = 0;
+	exp = 1;
+	while (digit < max_digits)
 	{
-		sort_by_bit(a, b, count, bit);
-		bit++;
+		sort_by_bit(a, b, count, exp);
+		exp *= 10;
+		digit++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: tusandri <tusandri@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 08:37:45 by hrandri2          #+#    #+#             */
-/*   Updated: 2026/04/15 01:05:47 by tusandri         ###   ########.fr       */
+/*   Updated: 2026/04/18 15:44:38 by tusandri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # include <unistd.h>
 # include <stddef.h>
 # include "./libft/libft.h"
-# include "./ft_printf/ft_printf.h"
 # include "./ft_fprintf/ft_fprintf.h"
 
 //*** principal structure ***
@@ -59,6 +58,7 @@ typedef struct s_args
 	char	*flag;
 	char	**values;
 	bool	free_values;
+	bool	free_flag;
 	bool	bench;
 }	t_args;
 
@@ -129,12 +129,10 @@ void			push_buckets(t_stack_node **a, t_stack_node **b, int bkt,
 					t_count *count);
 void			move_back_fast(t_stack_node **a, t_stack_node **b,
 					t_count *count);
-// void			slow_bring_to_top(t_stack_node **stack, t_stack_node *node,
-					// char name, t_count *count);
 void			move_back_very_slow(t_stack_node **a, t_stack_node **b,
 					t_count *count);
 
-//*** simpl sort utils ***
+//*** simple sort utils ***
 int				cost_to_top(t_stack_node *stack, t_stack_node *node);
 int				calculate_total_cost(t_stack_node *a, t_stack_node *b,
 					t_stack_node *node);
@@ -174,10 +172,12 @@ void			pb(t_stack_node **b, t_stack_node **a, t_count *count);
 
 //*** bench utils ***
 float			compute_disorder(t_stack_node *a);
-void			bench_mode(double disorder_percent, char *flag, t_count *count);
+void			bench_mode(t_stack_node **a, double disorder_percent,
+					char *flag, t_count *count);
 void			print_count(t_count *count);
 
 //*** Flags utils ***
 char			**extract_values(char **split_args, char **flag, bool *bench);
+bool			is_flag_argument(char *arg);
 
 #endif

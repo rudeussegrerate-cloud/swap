@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bench.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tusandri <tusandri@student.42antananari    +#+  +:+       +#+        */
+/*   By: hrandri2 <hrandri2@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/18 23:35:56 by hrandri2          #+#    #+#             */
-/*   Updated: 2026/04/01 20:27:49 by tusandri         ###   ########.fr       */
+/*   Updated: 2026/04/16 02:30:45 by hrandri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ static char	*clean_flag_name(char *flag)
 	return (flag);
 }
 
-void	bench_mode(double disorder_percent, char *flag, t_count *count)
+void	bench_mode(t_stack_node **a, double disorder_percent, char *flag,
+						t_count *count)
 {
 	char	*name;
 
@@ -37,7 +38,7 @@ void	bench_mode(double disorder_percent, char *flag, t_count *count)
 		ft_fprintf(2, " / O(n log n)\n");
 	else if (ft_strcmp(name, "adaptive") == 0)
 	{
-		if (disorder_percent < 20.0)
+		if (disorder_percent < 20.0 || (stack_len(*a) <= 5))
 			ft_fprintf(2, " / O(n^2)\n");
 		else if (disorder_percent < 50.0)
 			ft_fprintf(2, " / O(n√n)\n");

@@ -21,7 +21,6 @@ LIBFT = libft.h
 all: $(NAME)
 
 $(NAME): $(OBJ)
-# 	$(CC) $(CFLAGS) -c $(SRCS) -I $(LIBFT) 
 	ar rc $(NAME) $(OBJ)
 
 clean:
